@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
+    <meta name="description" content="Mococo Bau Bau"/>
+    <link rel="icon" href="/static/mococo_1.png"/>
+    <title>Mococo Bau Bau</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        function playSound() {
+            let button = document.getElementById("soundButton");
+
+            fetch("/play")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("counter").innerText = "Baus: " + data.baus;
+
+                    // Меняем картинку на 0.2 сек
+                    button.src = "/static/mococo_2.png";
+                    setTimeout(() => {
+                        button.src = "/static/mococo_1.png"; // Возвращаем исходную
+                        setTimeout(() => {
+                            button.src = "/static/mococo_2.png"; // Повторная смена
+                            setTimeout(() => {
+                                button.src = "/static/mococo_1.png"; // Возвращаем обратно
+                            }, 500);
+                        }, 100);
+                    }, 200);
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <div id="container">
+        <h1>FWMC Bau Bau</h1>
+        <img id="soundButton" src="/static/mococo_1.png" onclick="playSound()">
+        <p id="counter">Baus: {{ baus }}</p>
+    </div>
+</body>
+</html>
